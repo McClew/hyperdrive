@@ -10,26 +10,26 @@ BLUE=`tput bold && tput setaf 4`
 RESET=`tput sgr0`
 
 # Styling functions
-function SUCCESS()
+function success()
 {
 	echo -e "\n${GREEN}${1}${RESET}"
 }
 
-function ERROR()
+function error()
 {
 	echo -e "\n${RED}${1}${RESET}"
 }
 
-function INFO()
+function info()
 {
 	echo -e "\n${BLUE}${1}${RESET}"
 }
 
 # Utility functions
-function CHECK_OS()
+function check_os()
 {
     if ! [ -f "/etc/debian_version" ]; then
-        ERROR " OS is not Debian, this script will probably not work!"
+        error " OS is not Debian, this script will probably not work!"
         echo " Continue anyway? [y/n]:"
         read -r continue
 
@@ -45,68 +45,71 @@ function CHECK_OS()
     return
 }
 
-function CHECK_ROOT()
+function check_root()
 {
     # Test for root
     if [ $UID -ne 0 ]; then
-        ERROR " [ERR] Please run this script as root."
+        error " [ERR] Please run this script as root."
         exit
     else
-        SUCCESS " [SUC] Logged in as root."
-        INFO " [INF] Starting hyperdrive."
+        success " [SUC] Logged in as root."
+        info " [INF] Starting hyperdrive."
         return
     fi
 }
 
 # Process functions
-function STARTUP()
+function startup()
 {
     # Banner
-    INFO " ~ HYPERDRIVE ~"
+    info " ~ HYPERDRIVE ~"
 
-    CHECK_OS
+    check_os
 
     echo " What function do you want to run?"
-    INFO " [ 1 ] Install tools"
-    INFO " [ 2 ] Modify Debian"
-    INFO " [ 3 ] Info"
+    info " [ 1 ] Install tools"
+    info " [ 2 ] Modify Debian"
+    info " [ 3 ] Info"
+    info " [ 0 ] Exit"
 
     read -r function_choice
 
-    if [function_choice == 1]; then
-        INSTALLER
-    elif [function_choice == 2]; then
-        CUSTOMISER
-    elif [function_choice == 3]; then
-        INFO_PROVIDER
+    if ["${function_choice}" == "1"]; then
+        installer
+    elif ["${function_choice}" == "2"]; then
+        customiser
+    elif ["${function_choice}" == "3"]; then
+        info_provider
+    elif ["${function_choice}" == "0"]; then
+        exit
     else
-        STARTUP
+        startup
     fi
 
     return
 }
 
-function INSTALLER()
+function installer()
 {
-    CHECK_ROOT
+    check_root
 
     # -- General --
-    INFO " [INF] Updating repositories..."
+    info " [INF] Updating repositories..."
     sudo apt update
 }
 
-function CUSTOMISER()
+function customiser()
 {
-    echo "this does nothing yet..."
-    STARTUP
+    echo " this does nothing yet..."
+    startup
 }
 
-function INFO_PROVIDER()
+function info_provider()
 {
-    echo "this does nothing yet..."
-    STARTUP
+    echo " this does nothing yet..."
+    startup
 }
 
 clear
-STARTUP
+startup
 exit
