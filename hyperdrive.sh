@@ -1,13 +1,17 @@
 #!/bin/bash
 
 # Global parameters
-USER=""
+BINARY_INSTALL_PATH="/usr/local/bin"
+WORDLIST_INSTALL_PATH="/usr/share/wordlists/"
 
 # Styling variables
 GREEN=`tput bold && tput setaf 2`
 RED=`tput bold && tput setaf 1`
 BLUE=`tput bold && tput setaf 4`
 RESET=`tput sgr0`
+
+# Install lists
+INFO_GATHERING_PACKAGES=("dnsenum" "dnsdumpter" "enum4linux" "nmap" "fierce" "sublist3r")
 
 # Styling functions
 function success()
@@ -63,6 +67,12 @@ function check_root()
     fi
 }
 
+function update_pm()
+{
+    info " [INF] Updating repositories..."
+    sudo apt update
+}
+
 # Process functions
 function startup()
 {
@@ -97,10 +107,11 @@ function startup()
 function installer()
 {
     check_root
+    update_pm
 
-    # -- General --
-    info " [INF] Updating repositories..."
-    sudo apt update
+    for package in "${INFO_GATHERING_PACKAGES[@]}"; do
+        echo "$package"
+    done
 }
 
 function customiser()
