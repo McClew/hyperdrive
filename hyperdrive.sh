@@ -142,12 +142,12 @@ function installer()
     check_git
 
     for packages in "${INFO_GATHERING_PACKAGES[@]}"; do
-        if [[ $package =~ /([^/]+)\.git$ ]]; then
+        if [[ $packages =~ /([^/]+)\.git$ ]]; then
             package_name="${BASH_REMATCH[1]}"
         fi
 
         info "Installing ${package_name}..."
-        sudo git clone "$package"
+        sudo git clone "$packages"
     done
 }
 
