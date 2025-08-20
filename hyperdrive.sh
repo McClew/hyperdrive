@@ -30,18 +30,19 @@ function CHECK_OS()
 {
     if ! [ -f "/etc/debian_version" ]; then
         ERROR " OS is not Debian, this script will probably not work!"
+        echo " Continue anyway? [y/n]:"
+        read -r continue
+
+        if [ "${continue,,}" == "n" || "${continue,,}" == "no"]; then
+            exit
+        elif [ "${continue,,}" == "y" || "${continue,,}" == "yes"]; then
+            return
+        else
+            exit
+        fi
     fi
 
-    echo " Continue anyway? [y/n]:"
-    read -r continue
-
-    if [ "${continue,,}" == "n" || "${continue,,}" == "no"]; then
-        exit
-    elif [ "${continue,,}" == "y" || "${continue,,}" == "yes"]; then
-        return
-    else
-        exit
-    fi
+    return
 }
 
 function CHECK_ROOT()
@@ -81,6 +82,8 @@ function STARTUP()
     else
         STARTUP
     fi
+
+    return
 }
 
 function INSTALLER()
@@ -106,3 +109,4 @@ function INFO_PROVIDER()
 
 clear
 STARTUP
+exit
