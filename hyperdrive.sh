@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Global parameters
+PACKAGE_INSTALL_PATH="/opt"
 BINARY_INSTALL_PATH="/usr/local/bin"
 WORDLIST_INSTALL_PATH="/usr/share/wordlists/"
 
@@ -11,8 +12,8 @@ BLUE=`tput bold && tput setaf 4`
 RESET=`tput sgr0`
 
 # Install lists
-INFO_GATHERING_PACKAGES=("dnsenum" "nmap" "fierce" "sublist3r")
-INFO_GATHERING_BINARIES=("dnsdumpter" "enum4linux")
+INFO_GATHERING_MANAGED=("dnsenum" "nmap" "fierce" "sublist3r")
+INFO_GATHERING_PACKAGES=("git@gitlab.com:kalilinux/packages/enum4linux.git")
 
 # Styling functions
 function success()
@@ -75,6 +76,18 @@ function update_pm()
     sudo apt update
 }
 
+function check_git()
+{
+    git --version 2>&1 >/dev/null
+    git_available=$?
+
+    if [ git_available -eq 0 ]; then
+        error "Git not found."
+        info "Installing git"
+        sudo apt install git
+    fi
+}
+
 # Process functions
 function startup()
 {
@@ -121,8 +134,20 @@ function installer()
         postfix=""
     fi
 
-    for package in "${INFO_GATHERING_PACKAGES[@]}"; do
-        sudo apt install "$package" "$postfix"
+    for managed in "${INFO_GATHERING_MANAGED[@]}"; do
+        info "Installing ${managed}..."
+        sudo apt install "$managed" "$postfix"
+    done
+
+    check_git
+
+    for packages in "${INFO_GATHERING_PACKAGES[@]}"; do
+        if [[ $package =~ /([^/]+)\.git$ ]]; then
+            package_name="${BASH_REMATCH[1]}"
+        fi
+
+        info "Installing ${package_name}..."
+        sudo git clone "$package"
     done
 }
 
