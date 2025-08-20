@@ -79,6 +79,7 @@ function STARTUP()
     elif [function_choice == 3]; then
         INFO_PROVIDER
     else
+        STARTUP
     fi
 }
 
