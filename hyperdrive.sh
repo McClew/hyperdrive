@@ -128,7 +128,7 @@ function installer()
     echo -n "> "
     read -r unattended_install
 
-    if [ "${unattended_install,,}" == "y" || "${unattended_install,,}" == "yes" ]; then
+    if [ "${unattended_install,,}" == "y" ] || [ "${unattended_install,,}" == "yes" ]; then
         postfix="-y"
     else
         postfix=""
