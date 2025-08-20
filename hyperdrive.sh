@@ -32,14 +32,14 @@ function info()
 # Utility functions
 function banner()
 {
-    info " ~ HYPERDRIVE ~"
+    info "~ HYPERDRIVE ~"
 }
 
 function check_os()
 {
     if ! [ -f "/etc/debian_version" ]; then
-        error " OS is not Debian, this script will probably not work!"
-        echo " Continue anyway? [y/n]:"
+        error "OS is not Debian, this script will probably not work!"
+        echo "Continue anyway? [y/n]:"
         read -r continue
 
         if [ "${continue,,}" == "n" || "${continue,,}" == "no" ]; then
@@ -58,18 +58,18 @@ function check_root()
 {
     # Test for root
     if [ $UID -ne 0 ]; then
-        error " [ERR] Please run this script as root."
+        error "[ERR] Please run this script as root."
         exit
     else
-        success " [SUC] Logged in as root."
-        info " [INF] Starting hyperdrive."
+        success "[SUC] Logged in as root."
+        info "[INF] Starting hyperdrive."
         return
     fi
 }
 
 function update_pm()
 {
-    info " [INF] Updating repositories..."
+    info "[INF] Updating repositories..."
     sudo apt update
 }
 
@@ -80,13 +80,13 @@ function startup()
     banner
     check_os
 
-    echo " What function do you want to run?"
-    info " [ 1 ] Install tools"
-    info " [ 2 ] Modify Debian"
-    info " [ 3 ] Info"
-    info " [ 0 ] Exit"
+    echo "What function do you want to run?"
+    info "[ 1 ] Install tools"
+    info "[ 2 ] Modify Debian"
+    info "[ 3 ] Info"
+    info "[ 0 ] Exit"
     echo ""
-    echo -n " > "
+    echo -n "> "
     read -r choice
 
     if [ "${choice}" == "1" ]; then
@@ -110,19 +110,19 @@ function installer()
     update_pm
 
     for package in "${INFO_GATHERING_PACKAGES[@]}"; do
-        echo "$package"
+        sudo apt install "$package"
     done
 }
 
 function customiser()
 {
-    echo " this does nothing yet..."
+    echo "this does nothing yet..."
     startup
 }
 
 function info_provider()
 {
-    echo " this does nothing yet..."
+    echo "this does nothing yet..."
     startup
 }
 
