@@ -25,40 +25,80 @@ function INFO()
 	echo -e "\n${BLUE}${1}${RESET}"
 }
 
+# Utility functions
 function CHECK_OS()
 {
     if ! [ -f "/etc/debian_version" ]; then
-        ERROR "OS is not Debian, this script will probably not work!"
+        ERROR " OS is not Debian, this script will probably not work!"
+    fi
+
+    echo " Continue anyway? [y/n]:"
+    read -r continue
+
+    if [ "${continue,,}" == "n" || "${continue,,}" == "no"]; then
+        exit
+    elif [ "${continue,,}" == "y" || "${continue,,}" == "yes"]; then
+        return
+    else
+        exit
     fi
 }
 
+function CHECK_ROOT()
+{
+    # Test for root
+    if [ $UID -ne 0 ]; then
+        ERROR " [ERR] Please run this script as root."
+        exit
+    else
+        SUCCESS " [SUC] Logged in as root."
+        INFO " [INF] Starting hyperdrive."
+        return
+    fi
+}
+
+# Process functions
 function STARTUP()
 {
     # Banner
-    INFO "||| HYPERDRIVE STARTED |||"
+    INFO " ~ HYPERDRIVE ~"
 
     CHECK_OS
 
-    echo "What function do you want to run?"
-    INFO "[ 1 ] Install tools"
-    INFO "[ 2 ] Modify Debian"
-    INFO "[ 3 ] Info"
+    echo " What function do you want to run?"
+    INFO " [ 1 ] Install tools"
+    INFO " [ 2 ] Modify Debian"
+    INFO " [ 3 ] Info"
+
+    read -r function_choice
+
+    if [function_choice == 1]; then
+        INSTALLER
+    elif [function_choice == 2]; then
+    elif [function_choice == 3]; then
+    else
+    fi
 }
 
-function UPDATER()
+function INSTALLER()
 {
-    # Test for root
-    if [ $UID -ne 0 ]
-    then
-        ERROR "[ERR] Please run this script as root."
-        exit
-    else
-        SUCCESS "[SUC] Logged in as root."
-        INFO "[INF] Starting ignition."
-    fi
+    CHECK_ROOT
+
     # -- General --
-    INFO "[INF] Updating repositories..."
+    INFO " [INF] Updating repositories..."
     sudo apt update
+}
+
+function CUSTOMISER()
+{
+    echo "this does nothing yet..."
+    STARTUP
+}
+
+function INFO_PROVIDER()
+{
+    echo "this does nothing yet..."
+    STARTUP
 }
 
 clear
