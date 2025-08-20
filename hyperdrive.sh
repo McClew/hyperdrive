@@ -11,7 +11,8 @@ BLUE=`tput bold && tput setaf 4`
 RESET=`tput sgr0`
 
 # Install lists
-INFO_GATHERING_PACKAGES=("dnsenum" "dnsdumpter" "enum4linux" "nmap" "fierce" "sublist3r")
+INFO_GATHERING_PACKAGES=("dnsenum" "nmap" "fierce" "sublist3r")
+INFO_GATHERING_BINARIES=("dnsdumpter" "enum4linux")
 
 # Styling functions
 function success()
@@ -40,6 +41,7 @@ function check_os()
     if ! [ -f "/etc/debian_version" ]; then
         error "OS is not Debian, this script will probably not work!"
         echo "Continue anyway? [y/n]:"
+        echo -n "> "
         read -r continue
 
         if [ "${continue,,}" == "n" || "${continue,,}" == "no" ]; then
@@ -109,8 +111,18 @@ function installer()
     check_root
     update_pm
 
+    echo "Allow unattended installs? [y/n]"
+    echo -n "> "
+    read -r unattended_install
+
+    if [ "${unattended_install,,}" == "y" || "${unattended_install,,}" == "yes" ]; then
+        postfix="-y"
+    else
+        postfix=""
+    fi
+
     for package in "${INFO_GATHERING_PACKAGES[@]}"; do
-        sudo apt install "$package"
+        sudo apt install "$package" "$postfix"
     done
 }
 
