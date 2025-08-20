@@ -75,7 +75,9 @@ function STARTUP()
     if [function_choice == 1]; then
         INSTALLER
     elif [function_choice == 2]; then
+        CUSTOMISER
     elif [function_choice == 3]; then
+        INFO_PROVIDER
     else
     fi
 }
