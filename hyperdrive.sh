@@ -33,9 +33,9 @@ function check_os()
         echo " Continue anyway? [y/n]:"
         read -r continue
 
-        if [ "${continue,,}" == "n" || "${continue,,}" == "no"]; then
+        if [ "${continue,,}" == "n" || "${continue,,}" == "no" ]; then
             exit
-        elif [ "${continue,,}" == "y" || "${continue,,}" == "yes"]; then
+        elif [ "${continue,,}" == "y" || "${continue,,}" == "yes" ]; then
             return
         else
             exit
@@ -75,13 +75,13 @@ function startup()
     echo -n " > "
     read -r choice
 
-    if ["${choice}" == "1"]; then
+    if [ "${choice}" == "1" ]; then
         installer
-    elif ["${choice}" == "2"]; then
+    elif [ "${choice}" == "2" ]; then
         customiser
-    elif ["${choice}" == "3"]; then
+    elif [ "${choice}" == "3" ]; then
         info_provider
-    elif ["${choice}" == "0"]; then
+    elif [ "${choice}" == "0" ]; then
         exit
     else
         startup
