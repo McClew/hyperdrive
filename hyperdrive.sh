@@ -26,6 +26,11 @@ function info()
 }
 
 # Utility functions
+function banner()
+{
+    info " ~ HYPERDRIVE ~"
+}
+
 function check_os()
 {
     if ! [ -f "/etc/debian_version" ]; then
@@ -61,9 +66,8 @@ function check_root()
 # Process functions
 function startup()
 {
-    # Banner
-    info " ~ HYPERDRIVE ~"
-
+    clear
+    banner
     check_os
 
     echo " What function do you want to run?"
@@ -111,6 +115,5 @@ function info_provider()
     startup
 }
 
-clear
 startup
 exit
