@@ -72,7 +72,8 @@ function startup()
     info " [ 3 ] Info"
     info " [ 0 ] Exit"
 
-    read -r function_choice
+    echo -n " > "
+    read function_choice
 
     if ["${function_choice}" == "1"]; then
         installer
