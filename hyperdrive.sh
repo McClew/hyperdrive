@@ -71,17 +71,17 @@ function startup()
     info " [ 2 ] Modify Debian"
     info " [ 3 ] Info"
     info " [ 0 ] Exit"
-
+    echo ""
     echo -n " > "
-    read function_choice
+    read -r choice
 
-    if ["${function_choice}" == "1"]; then
+    if ["${choice}" == "1"]; then
         installer
-    elif ["${function_choice}" == "2"]; then
+    elif ["${choice}" == "2"]; then
         customiser
-    elif ["${function_choice}" == "3"]; then
+    elif ["${choice}" == "3"]; then
         info_provider
-    elif ["${function_choice}" == "0"]; then
+    elif ["${choice}" == "0"]; then
         exit
     else
         startup
