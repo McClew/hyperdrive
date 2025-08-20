@@ -88,6 +88,12 @@ function check_git()
     fi
 }
 
+function trust_sources()
+{
+    ssh-keyscan github.com >> ~/.ssh/known_hosts
+    ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
+}
+
 # Process functions
 function startup()
 {
@@ -130,6 +136,7 @@ function installer()
 
     if [ "${unattended_install,,}" == "y" ] || [ "${unattended_install,,}" == "yes" ]; then
         postfix="-y"
+        trust_sources
     else
         postfix=""
     fi
